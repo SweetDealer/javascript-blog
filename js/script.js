@@ -50,7 +50,7 @@ function generateTitleLinks() {
     /* for each article */
 
     const articles = document.querySelectorAll(optArticleSelector);
- 
+
     let html = '';
 
     for (let article of articles) {
@@ -60,11 +60,11 @@ function generateTitleLinks() {
         const articleTitle = article.querySelector(optTitleSelector).innerHTML;
         /* create HTML of the link */
         const linkHTML = `<li><a href="#${articleId}"><span>${articleTitle}</span></a></li>`;
-        html += linkHTML; 
+        html += linkHTML;
     }
-    
+
     /* insert link into titleList */
-    
+
     titleList.innerHTML = html;
 
     const links = document.querySelectorAll('.titles a');
