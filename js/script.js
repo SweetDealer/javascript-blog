@@ -26,7 +26,8 @@ function titleClickHandler(event) {
 const optArticleSelector = '.post',
     optTitleSelector = '.post-title',
     optTitleListSelector = '.titles',
-    optArticleTagsSelector = '.post-tags .list';
+    optArticleTagsSelector = '.post-tags .list',
+    optTagsListSelector = '.tags.list';
 
 function generateTitleLinks(customSelector = '') {
     /* remove contents of titleList */
@@ -172,7 +173,7 @@ function authorClickHandler(event) {
 
 function addClickListenersToAuthors() {
     /* find all links to author */
-    const allAuthorsLinks = document.querySelectorAll('a[href^="#author-"]')
+    const allAuthorsLinks = document.querySelectorAll('a[href^="#author-"]');
     /* START LOOP: for each link */
     for (let authorLink of allAuthorsLinks) {
         /* add authorClickHandler as event listener for that link */
@@ -182,3 +183,35 @@ function addClickListenersToAuthors() {
 }
 
 addClickListenersToAuthors();
+
+function generateTags() {
+    /* [NEW] create a new variable allTags with an empty array */
+    const allTags = [];
+    /* find all articles */
+    const articles = document.querySelectorAll(optArticleSelector);
+    /* START LOOP: for every article: */
+    for (let article of articles) {
+        /* get tags from data-tags attribute */
+        const articleTags = article.getAttribute('data-tags');
+        /* split tags into array */
+        const articleTagsArray = articleTags.split(' ');
+        /* START LOOP: for each tag */
+        for (let tag of articleTagsArray) {
+            /* generate HTML of the link */
+            const linkHTML = `<li><a href="#tag-${tag}">${tag}</a></li>`;
+            /* add generated code to html variable */
+            /* [NEW] check if this link is NOT already in allTags */
+            if (allTags.indexOf(linkHTML) == -1) {
+                /* [NEW] add generated code to allTags array */
+                allTags.push(linkHTML);
+            }
+            /* END LOOP: for each tag */
+        }
+        /* END LOOP: for every article: */
+    }
+    /* [NEW] find list of tags in right column */
+    const tagList = document.querySelector(optTagsListSelector);
+    /* [NEW] add html from allTags to tagList */
+    tagList.innerHTML = allTags.join(' ');
+}
+
