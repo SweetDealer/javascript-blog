@@ -57,31 +57,6 @@ function generateTitleLinks(customSelector = '') {
 
 generateTitleLinks();
 
-function generateTags() {
-    /* find all articles */
-    const articles = document.querySelectorAll(optArticleSelector);
-    /* START LOOP: for every article: */
-    for (let article of articles) {
-        /* make html variable with empty string */
-        let tagsHtml = '';
-        /* get tags from data-tags attribute */
-        const articleTags = article.getAttribute('data-tags');
-        /* split tags into array */
-        const articleTagsArray = articleTags.split(' ');
-        /* START LOOP: for each tag */
-        for (let tag of articleTagsArray) {
-            /* generate HTML of the link */
-            const linkTagHtml = `<li><a href="#tag-${tag}">${tag}</a></li>`;
-            /* add generated code to html variable */
-            tagsHtml += linkTagHtml;
-            /* END LOOP: for each tag */
-        }
-        /* insert HTML of all the links into the tags wrapper */
-        article.querySelector(optArticleTagsSelector).innerHTML = tagsHtml;
-        /* END LOOP: for every article: */
-    }
-}
-
 function calculateTagClass(count, params) {
     const normalizedCount = count - params.min;
     const normalizedMax = params.max - params.min;
@@ -218,6 +193,8 @@ function generateTags() {
     const articles = document.querySelectorAll(optArticleSelector);
     /* START LOOP: for every article: */
     for (let article of articles) {
+        /* make html variable with empty string */
+        let tagsHtml = '';
         /* get tags from data-tags attribute */
         const articleTags = article.getAttribute('data-tags');
         /* split tags into array */
@@ -225,7 +202,9 @@ function generateTags() {
         /* START LOOP: for each tag */
         for (let tag of articleTagsArray) {
             /* generate HTML of the link */
+            const linkTagHtml = `<li><a href="#tag-${tag}">${tag}</a></li>`;
             /* add generated code to html variable */
+            tagsHtml += linkTagHtml;
             /* [NEW] check if this link is NOT already in allTags */
             if (!allTags.hasOwnProperty(tag)) {
                 /* [NEW] add generated code to allTags object */
@@ -235,6 +214,8 @@ function generateTags() {
             }
             /* END LOOP: for each tag */
         }
+        /* insert HTML of all the links into the tags wrapper */
+        article.querySelector(optArticleTagsSelector).innerHTML = tagsHtml;
         /* END LOOP: for every article: */
     }
     /* [NEW] find list of tags in right column */
@@ -252,3 +233,4 @@ function generateTags() {
     /* [NEW] add html from allTags to tagList */
     tagList.innerHTML = allTagsHTML;
 }
+
