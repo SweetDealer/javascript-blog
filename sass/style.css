@@ -98,4 +98,24 @@ body {
 }
 .post-tags p {
   margin: 0 10px 0 0;
+}
+
+.tag-size-1 {
+  font-size: 0.8rem;
+}
+
+.tag-size-2 {
+  font-size: 0.9rem;
+}
+
+.tag-size-4 {
+  font-size: 1.1rem;
+}
+
+.tag-size-5 {
+  font-size: 1.2rem;
+}
+
+.post-tags a {
+  margin: 5px;
 }/*# sourceMappingURL=style.css.map */

@@ -73,7 +73,6 @@ function calculateTagsParams(tags) {
         min: 999999
     }
     for (let tag in tags) {
-        console.log(tag + " is used " + tags[tag] + " times");
         if (tags[tag] > params.max) {
             params.max = tags[tag]
         };
@@ -128,6 +127,8 @@ function addClickListenersToTags() {
 addClickListenersToTags();
 
 function generateAuthors() {
+    let allAuthors = [];
+    let authorList = '';
     /* find all articles */
     const articles = document.querySelectorAll(optArticleSelector);
     /* START LOOP: for every article: */
@@ -135,10 +136,16 @@ function generateAuthors() {
         /* get author from data-tags attribute */
         const articleAuthor = article.getAttribute('data-author');
         /* generate HTML of the link */
-        const linkAuthorHtml = `by <a href="#author-${articleAuthor}">${articleAuthor}</a>`
+        const linkAuthorHtmlForArticle = `by <a href = "#author-${articleAuthor}"> ${articleAuthor}</a>`;
         /* insert HTML of all the links into the author wrapper */
-        article.querySelector('.post-author').innerHTML = linkAuthorHtml
+        article.querySelector('.post-author').innerHTML = linkAuthorHtmlForArticle;
+        if (!allAuthors.includes(articleAuthor)) {
+            allAuthors.push(articleAuthor)
+            const linkAuthorHtmlForList = `<li><a href="#author-${articleAuthor}">${articleAuthor}</a></li>`;
+            authorList += linkAuthorHtmlForList;
+        }
     }
+    document.querySelector('.authors').innerHTML = authorList;
 }
 
 generateAuthors();
@@ -222,12 +229,11 @@ function generateTags() {
     const tagList = document.querySelector(optTagsListSelector);
     /* [NEW] create variable for all links HTML code */
     const tagsParams = calculateTagsParams(allTags);
-    console.log('tagsParams:', tagsParams);
     let allTagsHTML = '';
     /* [NEW] START LOOP: for each tag in allTags: */
     for (let tag in allTags) {
         /* [NEW] generate code of a link and it to allTagsHTML */
-        allTagsHTML += `<li><a href="#tag-${tag}" class="${calculateTagClass(allTags[tag], tagsParams)}">${tag} (${allTags[tag]})</a></li>`;
+        allTagsHTML += `<li><a href="#tag-${tag}" class="${calculateTagClass(allTags[tag], tagsParams)}">${tag}</a></li>`;
         /* [NEW] END LOOP: for each tag in allTags: */
     }
     /* [NEW] add html from allTags to tagList */
