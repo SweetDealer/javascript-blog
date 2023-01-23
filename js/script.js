@@ -77,20 +77,18 @@ function calculateTagClass(count, params) {
 generateTags();
 
 function calculateTagsParams(tags) {
-    const params = {
-        max: 0,
-        min: 999999
-    }
+    const params = {}
     for (let tag in tags) {
-        if (tags[tag] > params.max) {
+        if (!params.hasOwnProperty('max') || tags[tag] > params.max) {
             params.max = tags[tag]
         };
-        if (tags[tag] < params.min) {
+        if (!params.hasOwnProperty('min') || tags[tag] < params.min) {
             params.min = tags[tag]
         };
     }
     return params
 }
+
 
 function tagClickHandler(event) {
     /* prevent default action for this event */
@@ -135,7 +133,7 @@ function addClickListenersToTags() {
 addClickListenersToTags();
 
 function generateAuthors() {
-    let authors = [];
+    let authors = {};
     /* find all articles */
     const articles = document.querySelectorAll(optArticleSelector);
     /* START LOOP: for every article: */
@@ -147,11 +145,24 @@ function generateAuthors() {
         const linkAuthorHtmlForArticle = templates.authorLink(linkHTMLData);
         /* insert HTML of all the links into the author wrapper */
         article.querySelector('.post-author').innerHTML = linkAuthorHtmlForArticle;
-        if (authors.findIndex((next) => {return next.articleAuthor === articleAuthor}) < 0) {
-            authors.push({articleAuthor})
+        if (!authors.hasOwnProperty(articleAuthor)) {
+                /* [NEW] add generated code to allTags object */
+            authors[articleAuthor] = 1;
+            } else {
+            authors[articleAuthor]++
         }
     }
-    document.querySelector('.authors').innerHTML = templates.authorListLink({authors});
+    const allAuthorsData = { authors: [] };
+    /* [NEW] START LOOP: for each tag in allTags: */
+    for (let author in authors) {
+        /* [NEW] generate code of a link and it to allTagsHTML */
+        allAuthorsData.authors.push({
+            author: author,
+            count: authors[author],
+        });
+        /* [NEW] END LOOP: for each tag in allTags: */
+    }
+    document.querySelector('.authors').innerHTML = templates.authorListLink(allAuthorsData);
 }
 
 generateAuthors();
